@@ -247,7 +247,7 @@ Provisiona a infraestrura do zero, a pipeline possui as tarefas de validação d
 
 Pipeline da aplicação possui tarefas de build, teste, lint, releases, deploy e rollback.
 
-![Application CI/CD](imgs/workflow-app-cicd.png)
+![Application CI/CD](imgs/workflow-app-cicd-v2.png)
 
 #### Infrastructure Destroy
 
