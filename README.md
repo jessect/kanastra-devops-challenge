@@ -20,6 +20,7 @@
     + [Infrastructure CI/CD](#infrastructure-ci-cd)
     + [Infrastructure Destroy](#infrastructure-destroy)
     + [Load Testing](#load-testing)
+- [Git Flow](#git-flow)
 - [Validando Ambiente](#validando-ambiente)
   * [Pull Requests](#pull-requests)
   * [Deploy](#deploy)
@@ -32,6 +33,7 @@
   * [Loki + Grafana + Prometheus](#loki---grafana---prometheus)
   * [Certificado SSL/TLS](#certificado-ssl-tls)
 - [Artigos de Referência](#artigos-de-refer-ncia)
+
 
 
 
@@ -247,7 +249,7 @@ Realiza testes de carga na aplicação com a ferramenta [K6](https://k6.io/docs/
 
 ## Git Flow
 
-O fluxo de trabalho deste projeto foca na organização do versionamento da aplicação, utilizando 3 branches principais:
+O fluxo de trabalho deste projeto foca na organização do versionamento da aplicação, utilizando 3 branches:
 
 * main - branch principal do código de produção
 * staging - branch de release para testar e validar uma nova feature ou hotfix
@@ -265,7 +267,8 @@ As imagens docker possuem 2 tags:
 * versão do app
 
 ```
-gcloud container images list-tags gcr.io/jaylabs-kanastra-challenge/kanastra-app                                                                (jaylabs-kanastra-challenge/development)
+gcloud container images list-tags gcr.io/jaylabs-kanastra-challenge/kanastra-app
+
 DIGEST        TAGS                  TIMESTAMP
 024251be3fdc  1.0.2,d745971,latest  2023-01-15T13:43:05
 cf764b355701  1.0.1,0502bef         2023-01-15T13:33:35
