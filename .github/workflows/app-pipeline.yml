@@ -227,7 +227,7 @@ jobs:
         REQUEST_RESULT=$(curl -s https://kanastra-app-stg.duckdns.org/)
         if [ "$REQUEST_RESULT" != "Hello World!" ]; then echo "Bad request" && exit 1; fi;
   rollback_stg:
-    if: ${{ contains(needs.test_stg.result, 'failure') || contains(needs.helm_stg.result, 'failure') }} || contains(needs.load_stg.result, 'failure') }}
+    if: ${{ ${{failure()}} && contains(needs.test_stg.result, 'failure') || contains(needs.helm_stg.result, 'failure') }} || contains(needs.load_stg.result, 'failure') }}
     name: "Rollback - Staging"
     needs: [test_stg, load_stg, helm_stg]
     runs-on: ubuntu-latest
@@ -320,7 +320,7 @@ jobs:
     - name: Helm test
       run: helm test kanastra-app -n production
   rollback_prd:
-    if: ${{ contains(needs.test_prd.result, 'failure') || contains(needs.helm_prd.result, 'failure') }}
+    if: ${{ ${{failure()}} && contains(needs.test_prd.result, 'failure') || contains(needs.helm_prd.result, 'failure') }}
     name: "Rollback - Production"
     needs: [test_prd,helm_prd]
     runs-on: ubuntu-latest
