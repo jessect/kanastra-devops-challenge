@@ -188,6 +188,7 @@ resource "null_resource" "dns_update" {
     command = <<EOT
       echo url="https://www.duckdns.org/update?domains=kanastra-app&token=$DUCKDNS_TOKEN&ip=$LB_ADDRESS" | curl -k -o duck-app.log -K -
       echo url="https://www.duckdns.org/update?domains=kanastra-app-stg&token=$DUCKDNS_TOKEN&ip=$LB_ADDRESS" | curl -k -o duck-app-stg.log -K -
+      echo url="https://www.duckdns.org/update?domains=kanastra-app-dev&token=$DUCKDNS_TOKEN&ip=$LB_ADDRESS" | curl -k -o duck-app-stg.log -K -
       echo url="https://www.duckdns.org/update?domains=kanastra-grafana&token=$DUCKDNS_TOKEN&ip=$LB_ADDRESS" | curl -k -o duck-grafana.log -K -
       cat *.log
     EOT
