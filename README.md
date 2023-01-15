@@ -76,6 +76,14 @@ Use sempre as melhores práticas para provisionar os recursos da núvem que esco
 
 ## Arquitetura do Cenário
 
+Por ser um cenário simples e para economizar com recursos cloud, definido somente um cluster GKE para configurar os ambientes de desenvolvimento, staging e produção. Cada ambiente possui o seu respectivo namespace.
+
+Toda infraestrutura provisionada com Terraform, podendo ser executado a partir de um workflow do GitHub Actions. 
+
+Helm gerencia o deploy da aplicação e outras ferramentas de monitoramento (Grafana, Loki, Prometheus).
+
+A pipeline de aplicação possui etapas de validação do código e segue um fluxo para entrega contínua.
+
 ![Secrets](docs/images/kanastra-diagram.png)
 
 ## Configuração do Projeto
