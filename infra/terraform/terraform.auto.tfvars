@@ -21,6 +21,6 @@ k8s_namespaces = [
 
 # App service account roles
 app_roles = [
-  "kanastra.app",             # Push (write) and pull (read) docker images
-  "roles/container.developer" # Access to Kubernetes API objects
+  "projects/jaylabs-kanastra-challenge/roles/kanastra.app", # Push (write) and pull (read) docker images
+  "roles/container.developer"                               # Access to Kubernetes API objects
 ]
