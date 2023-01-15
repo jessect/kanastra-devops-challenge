@@ -4,6 +4,7 @@ on:
     branches:
       - main
       - staging
+      - develop
     paths:
     - 'app/**'
     tags:
@@ -12,6 +13,7 @@ on:
     branches:
       - main
       - staging
+      - develop
     paths:
     - 'app/**'
 jobs:
@@ -86,6 +88,39 @@ jobs:
         cache-dependency-path: ./app/package.json
     - run: npm install eslint -DE
     - run: npm run lint
+deploy_dev:
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+    name: "Deploy - Development"
+    needs: lint
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./infra/helm
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: GCP Auth
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_APP_CREDENTIALS }}'
+    - name: Get GKE Credentials
+      uses: 'google-github-actions/get-gke-credentials@v0'
+      # TODO: Change these parameters to a variable
+      with:
+        cluster_name: 'kanastra'
+        location: 'us-west1'
+    - name: Get GKE Nodes
+      run: kubectl get nodes
+    - name: Set up Helm
+      run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash && helm version
+    - name: Update tag
+      run: |
+        sed -i "s/^appVersion:.*/appVersion: \"$GITHUB_REF_NAME\"/g" kanastra-app/Chart.yaml
+        sed -i "s/tag:.*/tag: \"$GITHUB_REF_NAME\"/g" dev-values.yaml
+    - name: Upgrade helm release
+      run: helm upgrade kanastra-app -n development -f staging-values.yaml ./kanastra-app
+    - name: Helm history
+      run: helm history kanastra-app -n development
   release:
     name: Release
     needs: [test, lint]
