@@ -1,0 +1,12 @@
+image:
+  tag: latest
+ingress:
+  hosts:
+    - host: kanastra-app-stg.duckdns.org
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - kanastra-app-stg.duckdns.org
+      secretName: kanastra-app-stg-secret
