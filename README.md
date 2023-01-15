@@ -188,11 +188,14 @@ terraform output gsa_private_key_app
 ```
 
 **Dica**: Também é possível criar o ambiente todo pelo workflow do GitHub Actions
+
 [![Infrastructure CI/CD](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-pipeline.yml)
 
 ### Teardown
 
-Para destruir o ambiente execute o comando terraform ou workflow: [![Infrastructure Destroy](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-destroy.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-destroy.yml)
+Para destruir o ambiente execute o comando terraform ou workflow: 
+
+[![Infrastructure Destroy](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-destroy.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-destroy.yml)
 
 
 ```
