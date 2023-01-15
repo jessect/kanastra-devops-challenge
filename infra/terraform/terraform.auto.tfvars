@@ -22,6 +22,6 @@ k8s_namespaces = [
 
 # App service account roles
 app_roles = [
-  "roles/storage.objectCreator",
-  "roles/container.developer"
+  "roles/storage.legacyBucketWriter", # Push (write) images to and pull (read) images from an existing registry host in a project
+  "roles/container.developer"         # Access to Kubernetes API objects
 ]
