@@ -245,7 +245,7 @@ Realiza testes de carga na aplicação com a ferramenta [K6](https://k6.io/docs/
 
 ![Load Testing](docs/images/workflow-load-testing.png)
 
-## GitHub Flow
+## Git Flow
 
 O fluxo de trabalho deste projeto foca na organização do versionamento da aplicação, utilizando 3 branches principais:
 
