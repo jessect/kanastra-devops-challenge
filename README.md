@@ -64,7 +64,6 @@ Use sempre as melhores práticas para provisionar os recursos da núvem que esco
   * [[Mocha - Test]](./app/package.json#L10)
   * [[Helm - Test]](.github/workflows/app-pipeline.yml#L285)
   * [[Loki + Grafana + Prometheus]](./infra/terraform/helm.tf#L35)
-  * [[Certificado SSL/TLS]](./infra/terraform/helm.tf#L66)
   * [[Rollback de Deployments]](.github/workflows/app-pipeline.yml#L193)
   * [[Pod Autoscaler]](./infra/helm/kanastra-app/values.yaml#L73)
 
@@ -303,7 +302,6 @@ Os fluxos podem ser customizados conforme a necessidade da equipe de desenvolvim
 ### Mocha - Test
 ### Helm - Test
 ### Loki + Grafana + Prometheus
-### Certificado SSL/TLS
 
 ## Artigos de Referência
 
