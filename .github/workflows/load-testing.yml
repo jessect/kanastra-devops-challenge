@@ -6,6 +6,7 @@ on:
         type: choice
         description: Environment
         options:
+        - kanastra-app-dev.duckdns.org
         - kanastra-app-stg.duckdns.org
         - kanastra-app.duckdns.org
       duration:
