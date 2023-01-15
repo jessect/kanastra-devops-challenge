@@ -76,7 +76,7 @@ Use sempre as melhores práticas para provisionar os recursos da núvem que esco
 
 ## Arquitetura do Cenário
 
-Xablau
+![Secrets](docs/images/kanastra-diagram.png)
 
 ## Configuração do Projeto
 
@@ -236,7 +236,7 @@ Provisiona a infraestrura do zero, a pipeline possui as tarefas de validação d
 
 #### Application CI/CD
 
-Pipeline da aplicação possuui tarefas de build, teste, lint, cria releases, deploy em ambientes de staging/produção e rollback, caso ocorra uma falha nos testes após um deploy.
+Pipeline da aplicação possui tarefas de build, teste, lint, releases, deploy e rollback.
 
 ![Application CI/CD](docs/images/workflow-app-cicd.png)
 
