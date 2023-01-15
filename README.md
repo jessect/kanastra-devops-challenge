@@ -78,13 +78,13 @@ Use sempre as melhores práticas para provisionar os recursos da núvem que esco
 
 Por ser um cenário simples e para economizar com recursos cloud, definido somente um cluster GKE para configurar os ambientes de desenvolvimento, staging e produção. Cada ambiente possui o seu respectivo namespace.
 
-Toda infraestrutura provisionada com Terraform, podendo ser executado a partir de um workflow do GitHub Actions. 
+Toda infraestrutura provisionada com Terraform, podendo ser executado a partir de um workflow do GitHub Actions.
 
 Helm gerencia o deploy da aplicação e outras ferramentas de monitoramento (Grafana, Loki, Prometheus).
 
 A pipeline de aplicação possui etapas de validação do código e segue um fluxo para entrega contínua.
 
-![Secrets](docs/images/kanastra-diagram.png)
+![Secrets](imgs/kanastra-diagram.png)
 
 ## Configuração do Projeto
 
@@ -222,12 +222,12 @@ Antes de executar os workflows será necessário configurar as variáveis e secr
 - **GCP_APP_CREDENTIALS** - Credenciais da conta de serviço da aplicação.
 - **GCP_TF_CREDENTIALS** - Credenciais da conta de serviço do Terraform.
 
-![Secrets](docs/images/github-actions-secrets.png)
+![Secrets](imgs/github-actions-secrets.png)
 
 - **GCP_APP_NAME** - Nome de aplicação para efetuar pull e push de imagens docker.
 - **GCP_PROJECT_ID** - Id do projeto GCP para publicar as imagens docker no GCR.
 
-![Variables](docs/images/github-actions-vars.png)
+![Variables](imgs/github-actions-vars.png)
 
 ### Workflows
 
@@ -241,25 +241,25 @@ Antes de executar os workflows será necessário configurar as variáveis e secr
 
 Provisiona a infraestrura do zero, a pipeline possui as tarefas de validação de código, formatação, lint, plan e apply.
 
-![Infrastructure CI/CD](docs/images/workflow-infra-cicd.png)
+![Infrastructure CI/CD](imgs/workflow-infra-cicd.png)
 
 #### Application CI/CD
 
 Pipeline da aplicação possui tarefas de build, teste, lint, releases, deploy e rollback.
 
-![Application CI/CD](docs/images/workflow-app-cicd.png)
+![Application CI/CD](imgs/workflow-app-cicd.png)
 
 #### Infrastructure Destroy
 
 Esse workflow basicamente destrói a infraestrura removendo todos os recursos do GCP. Pode ser configurada para executar manualmente ou com agendamento.
 
-![Infrastructure Destroy](docs/images/workflow-infra-destroy.png)
+![Infrastructure Destroy](imgs/workflow-infra-destroy.png)
 
 #### Load Testing
 
 Realiza testes de carga na aplicação com a ferramenta [K6](https://k6.io/docs/#what-is-k6), possibilita escolher o ambiente e os parâmetros da ferramenta.
 
-![Load Testing](docs/images/workflow-load-testing.png)
+![Load Testing](imgs/workflow-load-testing.png)
 
 ## Git Flow
 
