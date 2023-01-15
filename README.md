@@ -245,6 +245,36 @@ Realiza testes de carga na aplicação com a ferramenta [K6](https://k6.io/docs/
 
 ![Load Testing](docs/images/workflow-load-testing.png)
 
+## GitHub Flow
+
+O fluxo de trabalho deste projeto foca na organização do versionamento da aplicação, utilizando 3 branches principais:
+
+* main - branch principal do código de produção
+* staging - branch de release para testar e validar uma nova feature ou hotfix
+* develop - branch para os desenvolvedores testarem o seu código no ambiente de desenvolvimento.
+
+A pipeline executa tarefas dependendo do tipo de evento:
+
+* pull request -  Executa tarefas build (somente o build da imagem docker), test e lint.
+* push -  Executa tarefas de build (build e push da imagem docker para o repositório GCR), test e lint e deploy das branch develop.
+* tag - Executa as tarefas similar ao push, mas efetua o deploy da branch staging e main.
+
+As imagens docker possuem 2 tags:
+
+* hash commit
+* versão do app
+
+```
+gcloud container images list-tags gcr.io/jaylabs-kanastra-challenge/kanastra-app                                                                (jaylabs-kanastra-challenge/development)
+DIGEST        TAGS                  TIMESTAMP
+024251be3fdc  1.0.2,d745971,latest  2023-01-15T13:43:05
+cf764b355701  1.0.1,0502bef         2023-01-15T13:33:35
+7ba31337fe33  1.0.0,b22ce34         2023-01-15T13:02:20
+```
+
+Os fluxos podem ser customizados conforme a necessidade da equipe de desenvolvimento.
+
+
 ## Validando Ambiente
 
 ### Pull Requests
@@ -261,6 +291,8 @@ Realiza testes de carga na aplicação com a ferramenta [K6](https://k6.io/docs/
 ## Artigos de Referência
 
 * [Building and testing Node.js](https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs)
+
+* [Git Flow: entenda o que é, como e quando utilizar](https://www.alura.com.br/artigos/git-flow-o-que-e-como-quando-utilizar)
 
 * [Duck DNS - free dynamic DNS](https://www.duckdns.org/spec.jsp)
 
