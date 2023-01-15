@@ -150,7 +150,7 @@ jobs:
       always()
       && contains(needs.*.result, 'success')
       && github.event_name == 'push'
-      && github.ref == 'refs/heads/staging'
+      && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/staging')
     name: "Deploy - Staging"
     needs: release
     runs-on: ubuntu-latest
@@ -186,7 +186,7 @@ jobs:
       always()
       && contains(needs.*.result, 'success')
       && github.event_name == 'push'
-      && github.ref == 'refs/heads/staging'
+      && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/staging')
     name: "Helm Test - Staging"
     needs: deploy_stg
     runs-on: ubuntu-latest
@@ -233,7 +233,7 @@ jobs:
       always()
       && contains(needs.*.result, 'success')
       && github.event_name == 'push'
-      && github.ref == 'refs/heads/staging'
+      && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/staging')
     name: "App Test - Staging"
     needs: deploy_stg
     runs-on: ubuntu-latest
@@ -250,7 +250,7 @@ jobs:
       || contains(needs.helm_stg.result, 'failure')
       || contains(needs.load_stg.result, 'failure')
       && github.event_name == 'push'
-      && github.ref == 'refs/heads/staging'
+      && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/staging')
     name: "Rollback - Staging"
     needs: [test_stg, load_stg, helm_stg]
     runs-on: ubuntu-latest
