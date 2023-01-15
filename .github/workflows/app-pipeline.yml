@@ -247,7 +247,7 @@ jobs:
     if: |
       always()
       && failure()
-      && (contains(needs.test_stg.result, 'failure') || contains(needs.helm_stg.result, 'failure') || contains(needs.load_stg.result, 'failure')
+      && (contains(needs.test_stg.result, 'failure') || contains(needs.helm_stg.result, 'failure') || contains(needs.load_stg.result, 'failure'))
       && github.event_name == 'push'
       && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main')
     name: "Rollback - Staging"
