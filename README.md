@@ -267,15 +267,15 @@ O fluxo de trabalho deste projeto foca na organização do versionamento da apli
 
 * **main** - branch principal do código de produção
 * **staging** - branch de release para testar e validar uma nova feature ou hotfix
-* **develop** - branch para os desenvolvedores testarem o seu código no ambiente de desenvolvimento.
+* **develop** - branch para os desenvolvedores testarem os seus códigos no ambiente de desenvolvimento.
 
 A pipeline executa tarefas dependendo do tipo de evento:
 
-* **pull request** -  Executa tarefas build (somente o build da imagem docker), test e lint.
-* **push** -  Executa tarefas de build (build e push da imagem docker para o repositório GCR), test e lint e deploy das branch develop.
-* **tag** - Executa as tarefas similar ao push, mas efetua o deploy da branch staging e main.
+* **pull request** -  Executa tarefas build test e lint.
+* **push** -  Executa tarefas de build + push da imagem docker para o repositório GCR e efetua o deploy da branch develop.
+* **tag** - Executa as tarefas similar ao push, mas efetua o deploy das branches staging e main.
 
-As imagens docker possuem 2 tags:
+As imagens docker possuem 2 tipos de tag:
 
 * hash commit
 * versão do app
@@ -306,6 +306,12 @@ Os fluxos podem ser customizados conforme a necessidade da equipe de desenvolvim
 ### Certificado SSL/TLS
 
 ## Artigos de Referência
+
+* [Best practices for GKE networking](https://cloud.google.com/kubernetes-engine/docs/best-practices/networking)
+
+* [Best practices for using Terraform](https://cloud.google.com/docs/terraform/best-practices-for-terraform)
+
+* [Docker and Node.js Best Practices](https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md)
 
 * [Building and testing Node.js](https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs)
 
