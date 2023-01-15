@@ -13,8 +13,6 @@ resource "google_project_iam_custom_role" "app" {
   description = "Grant required access to the application pipeline"
   permissions = [
     "resourcemanager.projects.get",
-    "resourcemanager.projects.list",
-    "storage.buckets.get",
     "storage.buckets.get",
     "storage.multipartUploads.abort",
     "storage.multipartUploads.create",
@@ -23,7 +21,8 @@ resource "google_project_iam_custom_role" "app" {
     "storage.objects.create",
     "storage.objects.delete",
     "storage.objects.list",
-    "storage.objects.list"
+    "storage.objects.get"
+
   ]
 }
 resource "google_project_iam_member" "app" {
