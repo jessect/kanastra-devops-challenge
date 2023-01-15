@@ -180,8 +180,6 @@ cd ..
 terraform init
 terraform plan
 terraform apply
-
-terraform apply --auto-approve -var duckdns_token=78ae93a0-a692-41a5-ad82-26917d21d4f3
 ```
 
 Se for utilizar o serviço Duck DNS, execute o comando do terraform informando o nome da variável com o token:
