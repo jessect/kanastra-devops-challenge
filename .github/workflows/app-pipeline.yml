@@ -182,7 +182,11 @@ jobs:
     - name: Helm history
       run: helm history kanastra-app -n staging
   helm_stg:
-    if: github.event_name == 'push'
+    if: |
+      always()
+      && contains(needs.*.result, 'success')
+      && github.event_name == 'push'
+      && github.ref == 'refs/heads/staging'
     name: "Helm Test - Staging"
     needs: deploy_stg
     runs-on: ubuntu-latest
@@ -208,7 +212,11 @@ jobs:
     - name: Helm test
       run: helm test kanastra-app -n staging
   load_stg:
-    if: github.event_name == 'push'
+    if: |
+      always()
+      && contains(needs.*.result, 'success')
+      && github.event_name == 'push'
+      && github.ref == 'refs/heads/staging'
     name: "Load Test - Staging"
     needs: deploy_stg
     runs-on: ubuntu-latest
@@ -221,7 +229,11 @@ jobs:
         filename: ./app/test/load-test.js
         flags: --vus 50 --duration 10s
   test_stg:
-    if: github.event_name == 'push'
+    if: |
+      always()
+      && contains(needs.*.result, 'success')
+      && github.event_name == 'push'
+      && github.ref == 'refs/heads/staging'
     name: "App Test - Staging"
     needs: deploy_stg
     runs-on: ubuntu-latest
@@ -231,7 +243,14 @@ jobs:
         REQUEST_RESULT=$(curl -s http://kanastra-app-stg.duckdns.org/)
         if [ "$REQUEST_RESULT" != "Hello World!" ]; then echo "Bad request" && exit 1; fi;
   rollback_stg:
-    if: github.ref_type == 'tag' && failure() && contains(needs.test_stg.result, 'failure') || contains(needs.helm_stg.result, 'failure') || contains(needs.load_stg.result, 'failure')
+    if: |
+      always()
+      && failure()
+      && contains(needs.test_stg.result, 'failure')
+      || contains(needs.helm_stg.result, 'failure')
+      || contains(needs.load_stg.result, 'failure')
+      && github.event_name == 'push'
+      && github.ref == 'refs/heads/staging'
     name: "Rollback - Staging"
     needs: [test_stg, load_stg, helm_stg]
     runs-on: ubuntu-latest
