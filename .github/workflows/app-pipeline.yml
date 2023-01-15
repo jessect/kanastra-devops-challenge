@@ -115,8 +115,9 @@ jobs:
         run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash && helm version
       - name: Update tag
         run: |
-          sed -i "s/^appVersion:.*/appVersion: \"$GITHUB_REF_NAME\"/g" kanastra-app/Chart.yaml
-          sed -i "s/tag:.*/tag: \"$GITHUB_REF_NAME\"/g" development-values.yaml
+          TAG=$(git rev-parse --short $GITHUB_SHA)
+          sed -i "s/^appVersion:.*/appVersion: \"$TAG\"/g" kanastra-app/Chart.yaml
+          sed -i "s/tag:.*/tag: \"$TAG\"/g" development-values.yaml
       - name: Upgrade helm release
         run: helm upgrade kanastra-app -n development -f development-values.yaml ./kanastra-app
       - name: Helm history
