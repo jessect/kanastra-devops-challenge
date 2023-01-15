@@ -52,7 +52,7 @@ Use sempre as melhores práticas para provisionar os recursos da núvem que esco
 * Configure um pipeline de deploy contínuo para o aplicação node em contêiner [![Application CI/CD](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml)
   * Deve conter pelo menos uma fase de testes e uma fase de deploy [[Test]](.github/workflows/app-pipeline.yml#L54) [[Deploy Staging]](.github/workflows/app-pipeline.yml#L148) [[Deploy Produção]](.github/workflows/app-pipeline.yml#L218)
   * A fase de deploy só deve ser executada se a fase de testes for bem-sucedida [[Código]](.github/workflows/app-pipeline.yml#L221)
-  * Ele deve seguir o fluxo do GitHub flow para o deploy [[Código WIP]](.github/workflows/app-pipeline.yml#L2)
+  * Ele deve seguir o fluxo do GitHub flow para o deploy [[Feito]](#git-flow)
   * O deploy deve ser feito no cluster k8s provisionado no Code Challenge [[Helm Chart]](./infra/helm)
 
 ### Bonus
@@ -295,9 +295,6 @@ Os fluxos podem ser customizados conforme a necessidade da equipe de desenvolvim
 
 ### Pull Requests
 ### Deploy
-
-
-
 ### Rollback de Deployments
 ### Lint Node.js
 ### Lint Terraform

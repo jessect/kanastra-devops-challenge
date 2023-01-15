@@ -336,7 +336,10 @@ jobs:
     - name: Helm test
       run: helm test kanastra-app -n production
   rollback_prd:
-    if: ${{ github.ref_type == 'tag' && failure() && (contains(needs.test_prd.result, 'failure') || contains(needs.helm_prd.result, 'failure')) }}
+    if: |
+      always()
+      && failure()
+      && (contains(needs.test_prd.result, 'failure') || contains(needs.helm_prd.result, 'failure'))
     name: "Rollback - Production"
     needs: [test_prd,helm_prd]
     runs-on: ubuntu-latest
