@@ -12,7 +12,7 @@ resource "google_project_iam_custom_role" "app" {
   title       = "Kanastra App Role"
   description = "Grant required access to the application pipeline"
   permissions = [
-    "storage.buckets.get",
+    "resourcemanager.projects.get",
     "storage.buckets.get",
     "storage.multipartUploads.abort",
     "storage.multipartUploads.create",
@@ -20,7 +20,9 @@ resource "google_project_iam_custom_role" "app" {
     "storage.multipartUploads.listParts",
     "storage.objects.create",
     "storage.objects.delete",
-    "storage.objects.list"
+    "storage.objects.list",
+    "storage.objects.get"
+
   ]
 }
 resource "google_project_iam_member" "app" {
