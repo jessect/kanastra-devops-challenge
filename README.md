@@ -58,14 +58,6 @@ Use sempre as melhores práticas para provisionar os recursos da núvem que esco
 ### Bonus
 * Adicionar pipelines para teste lint, e outras coisas a mais na aplicação
 
-  * [![Infrastructure CI/CD](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-pipeline.yml)
-
-  * [![Application CI/CD](https://github.com/jaylabs/kanastra-challenge/actions/workflows/app-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/app-pipeline.yml)
-
-  * [![Load Testing](https://github.com/jaylabs/kanastra-challenge/actions/workflows/load-testing.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/load-testing.yml)
-
-  * [![Infrastructure Destroy](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-destroy.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-destroy.yml)
-
   * [[Lint Node.js]](.github/workflows/app-pipeline.yml#L72)
   * [[Lint Terraform]](.github/workflows/infra-pipeline.yml#L60)
   * [[K6 - Load Testing]](.github/workflows/app-pipeline.yml#L170)
@@ -223,17 +215,23 @@ Antes de executar os workflows será necessário configurar as variáveis e secr
 
 ### Workflows
 
-#### Application CI/CD
+[![Infrastructure CI/CD](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-pipeline.yml)
+[![Application CI/CD](https://github.com/jaylabs/kanastra-challenge/actions/workflows/app-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/app-pipeline.yml)
+[![Load Testing](https://github.com/jaylabs/kanastra-challenge/actions/workflows/load-testing.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/load-testing.yml)
+[![Infrastructure Destroy](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-destroy.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-destroy.yml)
 
-Pipeline da aplicação possuui tarefas de build, teste, lint, cria releases, deploy em ambientes de staging/produção e rollback, caso ocorra uma falha nos testes após um deploy.
-
-![Application CI/CD](docs/images/workflow-app-cicd.png)
 
 #### Infrastructure CI/CD
 
 Provisiona a infraestrura do zero, a pipeline possui as tarefas de validação de código, formatação, lint, plan e aplicação.
 
 ![Infrastructure CI/CD](docs/images/workflow-infra-cicd.png)
+
+#### Application CI/CD
+
+Pipeline da aplicação possuui tarefas de build, teste, lint, cria releases, deploy em ambientes de staging/produção e rollback, caso ocorra uma falha nos testes após um deploy.
+
+![Application CI/CD](docs/images/workflow-app-cicd.png)
 
 #### Infrastructure Destroy
 
