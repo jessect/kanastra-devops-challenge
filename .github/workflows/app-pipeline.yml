@@ -91,7 +91,7 @@ jobs:
   deploy_dev:
       if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
       name: "Deploy - Development"
-      needs: lint
+      needs: [lint, test]
       runs-on: ubuntu-latest
       defaults:
         run:
