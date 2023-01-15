@@ -22,7 +22,6 @@ k8s_namespaces = [
 
 # App service account roles
 app_roles = [
-  "roles/storage.legacyBucketReader",
-  "roles/storage.objectViewer",
+  "roles/storage.objectCreator",
   "roles/container.developer"
 ]
