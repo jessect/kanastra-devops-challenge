@@ -239,7 +239,7 @@ Antes de executar os workflows será necessário configurar as variáveis e secr
 
 #### Infrastructure CI/CD
 
-Provisiona a infraestrura do zero, a pipeline possui as tarefas de validação de código, formatação, lint, plan e aplicação.
+Provisiona a infraestrura do zero, a pipeline possui as tarefas de validação de código, formatação, lint, plan e apply.
 
 ![Infrastructure CI/CD](docs/images/workflow-infra-cicd.png)
 
