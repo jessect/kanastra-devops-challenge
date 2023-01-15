@@ -47,9 +47,9 @@ Use sempre as melhores práticas para provisionar os recursos da núvem que esco
 
 
 ### Pipelines CI/CD
-* Escolha uma ferramenta de CI/CD apropriada [[GitHub Actions]](https://github.com/jaylabs/kanastra-challenge/actions)
-* Configure um pipeline de build de contêiner docker da aplicação node [![Application CI/CD](https://github.com/jaylabs/kanastra-challenge/actions/workflows/app-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/app-pipeline.yml)
-* Configure um pipeline de deploy contínuo para o aplicação node em contêiner [![Application CI/CD](https://github.com/jaylabs/kanastra-challenge/actions/workflows/app-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/app-pipeline.yml)
+* Escolha uma ferramenta de CI/CD apropriada [[GitHub Actions]](https://github.com/jaylabs/kanastra-devops-challenge/actions)
+* Configure um pipeline de build de contêiner docker da aplicação node [![Application CI/CD](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml)
+* Configure um pipeline de deploy contínuo para o aplicação node em contêiner [![Application CI/CD](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml)
   * Deve conter pelo menos uma fase de testes e uma fase de deploy [[Test]](.github/workflows/app-pipeline.yml#L52) [[Deploy Staging]](.github/workflows/app-pipeline.yml#L112) [[Deploy Produção]](.github/workflows/app-pipeline.yml#L218)
   * A fase de deploy só deve ser executada se a fase de testes for bem-sucedida [[Código]](.github/workflows/app-pipeline.yml#L221)
   * Ele deve seguir o fluxo do GitHub flow para o deploy [[Código WIP]](.github/workflows/app-pipeline.yml#L2)
@@ -189,13 +189,13 @@ terraform output gsa_private_key_app
 
 **Dica**: Também é possível criar o ambiente todo pelo workflow do GitHub Actions
 
-[![Infrastructure CI/CD](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-pipeline.yml)
+[![Infrastructure CI/CD](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/infra-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/infra-pipeline.yml)
 
 ### Teardown
 
-Para destruir o ambiente execute o comando terraform ou workflow: 
+Para destruir o ambiente execute o comando terraform ou workflow:
 
-[![Infrastructure Destroy](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-destroy.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-destroy.yml)
+[![Infrastructure Destroy](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/infra-destroy.yml/badge.svg)](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/infra-destroy.yml)
 
 
 ```
@@ -225,10 +225,10 @@ Antes de executar os workflows será necessário configurar as variáveis e secr
 
 ### Workflows
 
-[![Infrastructure CI/CD](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-pipeline.yml)
-[![Application CI/CD](https://github.com/jaylabs/kanastra-challenge/actions/workflows/app-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/app-pipeline.yml)
-[![Load Testing](https://github.com/jaylabs/kanastra-challenge/actions/workflows/load-testing.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/load-testing.yml)
-[![Infrastructure Destroy](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-destroy.yml/badge.svg)](https://github.com/jaylabs/kanastra-challenge/actions/workflows/infra-destroy.yml)
+[![Infrastructure CI/CD](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/infra-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/infra-pipeline.yml)
+[![Application CI/CD](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml)
+[![Load Testing](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/load-testing.yml/badge.svg)](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/load-testing.yml)
+[![Infrastructure Destroy](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/infra-destroy.yml/badge.svg)](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/infra-destroy.yml)
 
 
 #### Infrastructure CI/CD
