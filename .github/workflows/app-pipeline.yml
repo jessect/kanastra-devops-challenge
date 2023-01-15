@@ -146,6 +146,7 @@ jobs:
         $IMAGE_NAME:${{needs.test.outputs.commit}} \
         $IMAGE_NAME:${{needs.test.outputs.version}}
   deploy_stg:
+    # Condição: O job de deploy sempre vai iniciar quando outros jobs finalizarem com sucesso e quando for um evento com tag ou um evento push na branch staging.
     if: |
       always()
       && contains(needs.*.result, 'success')
@@ -184,8 +185,7 @@ jobs:
     if: |
       always()
       && contains(needs.*.result, 'success')
-      && (github.event_name == 'push' && github.ref == 'refs/heads/staging')
-      || (github.event_name == 'push' && github.ref == 'refs/heads/main' && github.ref_type == 'tag')
+      && (github.ref_type == 'tag' || (github.event_name == 'push' && github.ref == 'refs/heads/staging'))
     name: "Helm Test - Staging"
     needs: deploy_stg
     runs-on: ubuntu-latest
@@ -214,8 +214,7 @@ jobs:
     if: |
       always()
       && contains(needs.*.result, 'success')
-      && (github.event_name == 'push' && github.ref == 'refs/heads/staging')
-      || (github.event_name == 'push' && github.ref == 'refs/heads/main' && github.ref_type == 'tag')
+      && (github.ref_type == 'tag' || (github.event_name == 'push' && github.ref == 'refs/heads/staging'))
     name: "Load Test - Staging"
     needs: deploy_stg
     runs-on: ubuntu-latest
@@ -231,8 +230,7 @@ jobs:
     if: |
       always()
       && contains(needs.*.result, 'success')
-      && (github.event_name == 'push' && github.ref == 'refs/heads/staging')
-      || (github.event_name == 'push' && github.ref == 'refs/heads/main' && github.ref_type == 'tag')
+      && (github.ref_type == 'tag' || (github.event_name == 'push' && github.ref == 'refs/heads/staging'))
     name: "App Test - Staging"
     needs: deploy_stg
     runs-on: ubuntu-latest
@@ -246,8 +244,6 @@ jobs:
       always()
       && failure()
       && (contains(needs.test_stg.result, 'failure') || contains(needs.helm_stg.result, 'failure') || contains(needs.load_stg.result, 'failure'))
-      && github.event_name == 'push'
-      && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main')
     name: "Rollback - Staging"
     needs: [test_stg, load_stg, helm_stg]
     runs-on: ubuntu-latest
@@ -340,7 +336,7 @@ jobs:
     - name: Helm test
       run: helm test kanastra-app -n production
   rollback_prd:
-    if: ${{ github.ref == 'refs/heads/main' && github.ref_type == 'tag' && failure() && (contains(needs.test_prd.result, 'failure') || contains(needs.helm_prd.result, 'failure')) }}
+    if: ${{ github.ref_type == 'tag' && failure() && (contains(needs.test_prd.result, 'failure') || contains(needs.helm_prd.result, 'failure')) }}
     name: "Rollback - Production"
     needs: [test_prd,helm_prd]
     runs-on: ubuntu-latest
