@@ -1,0 +1,158 @@
+name: 'Infrastructure CI/CD'
+
+on:
+  push:
+    branches:
+    - main
+    paths:
+    - 'infra/terraform/**'
+  pull_request:
+    paths:
+    - 'infra/terraform/**'
+
+jobs:
+  validate:
+    name: 'Validate'
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./infra/terraform
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+    - name: Terraform Init
+      id: init
+      run: terraform init
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_TF_CREDENTIALS}}
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_TF_CREDENTIALS}}
+  format:
+    needs: validate
+    name: 'Format'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./infra/terraform
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+    - name: Terraform Init
+      run: terraform init
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_TF_CREDENTIALS}}
+    - name: Terraform Format
+      id: format
+      run: terraform fmt -check
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_TF_CREDENTIALS}}
+  lint:
+    needs: format
+    name: 'Lint'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./infra/terraform
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+    - uses: actions/cache@v3
+      name: Cache plugin dir
+      with:
+        path: ~/.tflint.d/plugins
+        key: ${{ matrix.os }}-tflint-${{ hashFiles('.tflint.hcl') }}
+    - name: Setup TFLint
+      uses: terraform-linters/setup-tflint@v3
+    - name: Show version
+      run: tflint --version
+    - name: Init TFLint
+      run: tflint --init
+    - name: Run TFLint
+      run: tflint -f compact
+  plan:
+    needs: lint
+    name: 'Plan'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./infra/terraform
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+    - name: Terraform Init
+      run: terraform init
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_TF_CREDENTIALS}}
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_TF_CREDENTIALS }}
+      continue-on-error: true
+    - name: Update Pull Request
+      uses: actions/github-script@v6
+      if: github.event_name == 'pull_request'
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const output = `#### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
+          <details><summary>Show Plan</summary>
+
+          \`\`\`\n
+          ${process.env.PLAN}
+          \`\`\`
+
+          </details>
+
+          *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
+  apply:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: plan
+    name: 'Apply'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./infra/terraform
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+    - name: Terraform Init
+      run: terraform init
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_TF_CREDENTIALS}}
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -var "duckdns_token=${DUCKDNS_TOKEN}" -auto-approve
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_TF_CREDENTIALS }}
+        DUCKDNS_TOKEN: ${{ secrets.DUCKDNS_TOKEN }}

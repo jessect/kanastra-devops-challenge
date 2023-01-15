@@ -1,0 +1,32 @@
+name: 'Infrastructure Destroy'
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        type: boolean
+        description: Are you sure?
+jobs:
+  terraform:
+    if: github.event.inputs.confirmation == 'true'
+    name: 'Terraform Destroy'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: GCP Auth
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_TF_CREDENTIALS }}'
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+    - name: Terraform Init
+      run: terraform init
+      working-directory: ./infra/terraform
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_TF_CREDENTIALS}}
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: ./infra/terraform
+      env:
+      # TF_LOG: trace
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_TF_CREDENTIALS }}

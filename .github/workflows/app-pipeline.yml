@@ -1,0 +1,310 @@
+name: 'Application CI/CD'
+on:
+  push:
+    branches:
+      - main
+      - staging
+    paths:
+    - 'app/**'
+    tags:
+      - '*.*.*'
+  pull_request:
+    branches:
+      - main
+      - staging
+    paths:
+    - 'app/**'
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: gcr.io/${{ vars.GCP_PROJECT_ID }}/${{ vars.GCP_APP_NAME }}
+    outputs:
+      version: ${{ steps.set-tag.outputs.TAG_VERSION }}
+      commit: ${{ steps.set-tag.outputs.TAG_COMMIT }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Set tag
+      id: set-tag
+      run: |
+         echo "TAG_VERSION=$GITHUB_REF_NAME" >> $GITHUB_OUTPUT
+         echo "TAG_COMMIT=$(git rev-parse --short $GITHUB_SHA)" >> $GITHUB_OUTPUT
+    - name: Print tags (debug)
+      run: |
+        echo "TAG_VERSION: ${{ steps.set-tag.outputs.TAG_VERSION }}"
+        echo "TAG_COMMIT: ${{ steps.set-tag.outputs.TAG_COMMIT }}"
+    - name: GCP Auth
+      if: github.ref_type != 'tag' && github.event_name == 'push'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_APP_CREDENTIALS }}'
+    - name: Configure Docker
+      if: github.ref_type != 'tag' && github.event_name == 'push'
+      run: gcloud auth configure-docker --quiet
+    - name: Build Docker image
+      if: github.ref_type != 'tag'
+      run: docker build ./app -t $IMAGE_NAME -t $IMAGE_NAME:${{ steps.set-tag.outputs.TAG_COMMIT }}
+    - name: Push Docker image
+      if: github.ref_type != 'tag' && github.event_name == 'push'
+      run: docker push $IMAGE_NAME -a
+  test:
+    name: "Mocha Test"
+    needs: build
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{needs.build.outputs.version}}
+      commit: ${{needs.build.outputs.commit}}
+    defaults:
+      run:
+        working-directory: ./app
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: "18.x"
+        cache: 'npm'
+        cache-dependency-path: ./app/package.json
+    - run: npm install
+    - run: npm test
+  lint:
+    name: Lint
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./app
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: "18.x"
+        cache: 'npm'
+        cache-dependency-path: ./app/package.json
+    - run: npm install eslint -DE
+    - run: npm run lint
+  release:
+    name: Release
+    needs: [test, lint]
+    runs-on: ubuntu-latest
+    if: github.ref_type == 'tag' && github.event_name == 'push'
+    env:
+      IMAGE_NAME: gcr.io/${{ vars.GCP_PROJECT_ID }}/${{ vars.GCP_APP_NAME }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Print tags (debug)
+      run: |
+        echo "TAG_VERSION: ${{needs.test.outputs.version}}"
+        echo "TAG_COMMIT: ${{needs.test.outputs.commit}}"
+    - name: GCP Auth
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_APP_CREDENTIALS }}'
+    - name: Update image tag
+      run: |-
+        yes | gcloud container images add-tag \
+        $IMAGE_NAME:${{needs.test.outputs.commit}} \
+        $IMAGE_NAME:${{needs.test.outputs.version}}
+  deploy_stg:
+    if: github.ref_type == 'tag' && github.event_name == 'push'
+    name: "Deploy - Staging"
+    needs: release
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./infra/helm
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: GCP Auth
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_APP_CREDENTIALS }}'
+    - name: Get GKE Credentials
+      uses: 'google-github-actions/get-gke-credentials@v0'
+      with:
+        cluster_name: 'kanastra'
+        location: 'us-west1'
+    - name: Get GKE Nodes
+      run: kubectl get nodes
+    - name: Set up Helm
+      run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash && helm version
+    - name: Update tag
+      run: |
+        sed -i "s/^appVersion:.*/appVersion: \"$GITHUB_REF_NAME\"/g" kanastra-app/Chart.yaml
+        sed -i "s/tag:.*/tag: \"$GITHUB_REF_NAME\"/g" staging-values.yaml
+    - name: Upgrade helm release
+      run: helm upgrade kanastra-app -n staging -f staging-values.yaml ./kanastra-app
+    - name: Helm history
+      run: helm history kanastra-app -n staging
+  helm_stg:
+    if: github.ref_type == 'tag' && github.event_name == 'push'
+    name: "Helm Test - Staging"
+    needs: deploy_stg
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./infra/helm
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: GCP Auth
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_APP_CREDENTIALS }}'
+    - name: Get GKE Credentials
+      uses: 'google-github-actions/get-gke-credentials@v0'
+      with:
+        cluster_name: 'kanastra'
+        location: 'us-west1'
+    - name: Get GKE Nodes
+      run: kubectl get nodes
+    - name: Set up Helm
+      run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash && helm version
+    - name: Helm test
+      run: helm test kanastra-app -n staging
+  load_stg:
+    if: github.ref_type == 'tag' && github.event_name == 'push'
+    name: "Load Test - Staging"
+    needs: deploy_stg
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Run k6 test
+      uses: grafana/k6-action@v0.2.0
+      with:
+        filename: ./app/test/load-test.js
+        flags: --vus 50 --duration 10s
+  test_stg:
+    if: github.ref_type == 'tag' && github.event_name == 'push'
+    name: "App Test - Staging"
+    needs: deploy_stg
+    runs-on: ubuntu-latest
+    steps:
+    - name: App test
+      run: |
+        REQUEST_RESULT=$(curl -s https://kanastra-app-stg.duckdns.org/)
+        if [ "$REQUEST_RESULT" != "Hello World!" ]; then echo "Bad request" && exit 1; fi;
+  rollback_stg:
+    if: ${{ always() && contains(needs.test_stg.result, 'failure') || contains(needs.helm_stg.result, 'failure') }} || contains(needs.load_stg.result, 'failure') }}
+    name: "Rollback - Staging"
+    needs: [test_stg, load_stg, helm_stg]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: GCP Auth
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_APP_CREDENTIALS }}'
+    - name: Get GKE Credentials
+      uses: 'google-github-actions/get-gke-credentials@v0'
+      with:
+        cluster_name: 'kanastra'
+        location: 'us-west1'
+    - name: Get GKE Nodes
+      run: kubectl get nodes
+    - name: Get release version before rollback
+      run: kubectl get deployment kanastra-app -n staging -o=jsonpath='{$.spec.template.spec.containers[:1].image}'
+    - name: Rollback release
+      run: kubectl rollout undo deployment/kanastra-app -n staging
+    - name: Get release version after rollback
+      run: kubectl get deployment kanastra-app -n staging -o=jsonpath='{$.spec.template.spec.containers[:1].image}'
+  deploy_prd:
+    if: github.ref_type == 'tag' && github.event_name == 'push'
+    name: "Deploy - Production"
+    needs: [load_stg, test_stg, helm_stg]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./infra/helm
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: GCP Auth
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_APP_CREDENTIALS }}'
+    - name: Get GKE Credentials
+      uses: 'google-github-actions/get-gke-credentials@v0'
+      with:
+        cluster_name: 'kanastra'
+        location: 'us-west1'
+    - name: Get GKE Nodes
+      run: kubectl get nodes
+    - name: Set up Helm
+      run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash && helm version
+    - name: Update tag
+      run: |
+        sed -i "s/^appVersion:.*/appVersion: \"$GITHUB_REF_NAME\"/g" kanastra-app/Chart.yaml
+        sed -i "s/tag:.*/tag: \"$GITHUB_REF_NAME\"/g" production-values.yaml
+    - name: Upgrade helm release
+      run: helm upgrade kanastra-app -n production -f production-values.yaml ./kanastra-app
+    - name: Helm history
+      run: helm history kanastra-app -n production
+  test_prd:
+    if: github.ref_type == 'tag' && github.event_name == 'push'
+    name: "App Test - Production"
+    needs: deploy_prd
+    runs-on: ubuntu-latest
+    steps:
+    - name: App test
+      run: |
+        REQUEST_RESULT=$(curl -s https://kanastra-app.duckdns.org/)
+        if [ "$REQUEST_RESULT" != "Hello World!" ]; then echo "Bad request" && exit 1; fi;
+  helm_prd:
+    if: github.ref_type == 'tag' && github.event_name == 'push'
+    name: "Helm Test - Production"
+    needs: deploy_prd
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./infra/helm
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: GCP Auth
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_APP_CREDENTIALS }}'
+    - name: Get GKE Credentials
+      uses: 'google-github-actions/get-gke-credentials@v0'
+      with:
+        cluster_name: 'kanastra'
+        location: 'us-west1'
+    - name: Get GKE Nodes
+      run: kubectl get nodes
+    - name: Set up Helm
+      run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash && helm version
+    - name: Helm test
+      run: helm test kanastra-app -n production
+  rollback_prd:
+    if: ${{ always() && contains(needs.test_prd.result, 'failure') || contains(needs.helm_prd.result, 'failure') }}
+    name: "Rollback - Production"
+    needs: [test_prd,helm_prd]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: GCP Auth
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_APP_CREDENTIALS }}'
+    - name: Get GKE Credentials
+      uses: 'google-github-actions/get-gke-credentials@v0'
+      with:
+        cluster_name: 'kanastra'
+        location: 'us-west1'
+    - name: Get GKE Nodes
+      run: kubectl get nodes
+    - name: Get release version before rollback
+      run: kubectl get deployment kanastra-app -n production -o=jsonpath='{$.spec.template.spec.containers[:1].image}'
+    - name: Rollback release
+      run: kubectl rollout undo deployment/kanastra-app -n production
+    - name: Get release version after rollback
+      run: kubectl get deployment kanastra-app -n production -o=jsonpath='{$.spec.template.spec.containers[:1].image}'

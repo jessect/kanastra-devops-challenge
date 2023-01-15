@@ -1,0 +1,41 @@
+name: 'Load Testing'
+on:
+  workflow_dispatch:
+    inputs:
+      host:
+        type: choice
+        description: Environment
+        options:
+        - kanastra-app-stg.duckdns.org
+        - kanastra-app.duckdns.org
+      duration:
+        type: choice
+        description: 'Total scenario duration:'
+        options:
+        - 10s
+        - 30s
+        - 1m
+        - 5m
+        - 10m
+      vus:
+        type: choice
+        description: 'Number of VUs to run concurrently:'
+        options:
+        - 50
+        - 100
+        - 250
+        - 500
+jobs:
+  load_test:
+    name: 'Load Testing'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Replace host address
+      run: sed -i s/kanastra-app-stg.duckdns.org/${{ github.event.inputs.host }}/g ./app/test/load-test.js
+    - name: Run k6 local test
+      uses: grafana/k6-action@v0.2.0
+      with:
+        filename: ./app/test/load-test.js
+        flags: --vus ${{ github.event.inputs.vus }} --duration ${{ github.event.inputs.duration }}
