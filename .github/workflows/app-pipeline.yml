@@ -149,7 +149,7 @@ jobs:
     if: |
       always()
       && contains(needs.*.result, 'success')
-      && github.event_name == 'push'
+#      && github.event_name == 'push'
       && ((github.ref_type == 'tag' && github.ref == 'refs/heads/main') || github.ref == 'refs/heads/staging')
     name: "Deploy - Staging"
     needs: release
