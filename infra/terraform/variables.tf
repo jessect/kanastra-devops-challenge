@@ -74,3 +74,12 @@ variable "duckdns_token" {
   description = "Duck DNS token"
   default     = "xxxxxxxxxxx"
 }
+
+variable "app_roles" {
+  type        = list(string)
+  description = "List of required roles for App service account"
+  default = [
+    "roles/storage.objectViewer",
+    "roles/container.developer"
+  ]
+}

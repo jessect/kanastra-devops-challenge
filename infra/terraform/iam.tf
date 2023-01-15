@@ -7,7 +7,8 @@ resource "google_project_iam_member" "gcr" {
 
 # Grant required permissions to run the application pipeline
 resource "google_project_iam_member" "app" {
-  project = var.project_id
-  role    = "roles/container.developer"
-  member  = "serviceAccount:${google_service_account.app.email}"
+  for_each = toset(var.app_roles)
+  project  = var.project_id
+  role     = each.key
+  member   = "serviceAccount:${google_service_account.app.email}"
 }

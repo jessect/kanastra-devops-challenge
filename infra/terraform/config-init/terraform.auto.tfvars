@@ -7,7 +7,7 @@ region             = "us-west1"
 
 project_creation_enabled = false
 
-# Terraform roles
+# Terraform service account roles
 tf_roles = [
   "roles/compute.networkAdmin",
   "roles/storage.objectAdmin",

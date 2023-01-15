@@ -18,3 +18,10 @@ k8s_namespaces = [
   "staging",
   "production"
 ]
+
+
+# App service account roles
+app_roles = [
+  "roles/storage.objectViewer",
+  "roles/container.developer"
+]
