@@ -265,15 +265,15 @@ Realiza testes de carga na aplicação com a ferramenta [K6](https://k6.io/docs/
 
 O fluxo de trabalho deste projeto foca na organização do versionamento da aplicação, utilizando 3 branches:
 
-* main - branch principal do código de produção
-* staging - branch de release para testar e validar uma nova feature ou hotfix
-* develop - branch para os desenvolvedores testarem o seu código no ambiente de desenvolvimento.
+* **main** - branch principal do código de produção
+* **staging** - branch de release para testar e validar uma nova feature ou hotfix
+* **develop** - branch para os desenvolvedores testarem o seu código no ambiente de desenvolvimento.
 
 A pipeline executa tarefas dependendo do tipo de evento:
 
-* pull request -  Executa tarefas build (somente o build da imagem docker), test e lint.
-* push -  Executa tarefas de build (build e push da imagem docker para o repositório GCR), test e lint e deploy das branch develop.
-* tag - Executa as tarefas similar ao push, mas efetua o deploy da branch staging e main.
+* **pull request** -  Executa tarefas build (somente o build da imagem docker), test e lint.
+* **push** -  Executa tarefas de build (build e push da imagem docker para o repositório GCR), test e lint e deploy das branch develop.
+* **tag** - Executa as tarefas similar ao push, mas efetua o deploy da branch staging e main.
 
 As imagens docker possuem 2 tags:
 
