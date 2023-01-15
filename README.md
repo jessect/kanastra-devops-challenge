@@ -224,8 +224,8 @@ Antes de executar os workflows será necessário configurar as variáveis e secr
 
 ![Secrets](docs/images/github-actions-secrets.png)
 
-- **GCP_APP_NAME** - Nome de aplicação para criar o repositório no GCR.
-- **GCP_PROJECT_ID** - Id do projeto GCP para publicar a imagem docker no GCR.
+- **GCP_APP_NAME** - Nome de aplicação para efetuar pull e push de imagens docker.
+- **GCP_PROJECT_ID** - Id do projeto GCP para publicar as imagens docker no GCR.
 
 ![Variables](docs/images/github-actions-vars.png)
 
