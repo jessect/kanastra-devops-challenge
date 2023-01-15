@@ -14,6 +14,7 @@ pods_subnetwork_cidr = "192.168.64.0/21" # Smallest possible Pod IP range
 
 # K8s config
 k8s_namespaces = [
+  "development",
   "staging",
   "production"
 ]

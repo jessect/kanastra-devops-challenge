@@ -116,9 +116,9 @@ jobs:
       - name: Update tag
         run: |
           sed -i "s/^appVersion:.*/appVersion: \"$GITHUB_REF_NAME\"/g" kanastra-app/Chart.yaml
-          sed -i "s/tag:.*/tag: \"$GITHUB_REF_NAME\"/g" dev-values.yaml
+          sed -i "s/tag:.*/tag: \"$GITHUB_REF_NAME\"/g" development-values.yaml
       - name: Upgrade helm release
-        run: helm upgrade kanastra-app -n development -f staging-values.yaml ./kanastra-app
+        run: helm upgrade kanastra-app -n development -f development-values.yaml ./kanastra-app
       - name: Helm history
         run: helm history kanastra-app -n development
   release:
