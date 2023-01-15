@@ -6,7 +6,6 @@ resource "google_project_iam_member" "gcr" {
 }
 
 # Grant required permissions to run the application pipeline
-
 resource "google_project_iam_custom_role" "app" {
   role_id     = "kanastra.app"
   title       = "Kanastra App Role"
@@ -22,9 +21,9 @@ resource "google_project_iam_custom_role" "app" {
     "storage.objects.delete",
     "storage.objects.list",
     "storage.objects.get"
-
   ]
 }
+
 resource "google_project_iam_member" "app" {
   for_each = toset(var.app_roles)
   project  = var.project_id
