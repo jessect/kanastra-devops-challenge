@@ -192,4 +192,6 @@ resource "null_resource" "dns_update" {
       cat *.log
     EOT
   }
+
+  depends_on = [module.gke]
 }
