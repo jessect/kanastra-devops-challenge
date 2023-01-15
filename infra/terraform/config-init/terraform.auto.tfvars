@@ -16,7 +16,8 @@ tf_roles = [
   "roles/iam.serviceAccountKeyAdmin",
   "roles/iam.serviceAccountAdmin",
   "roles/iam.securityAdmin",
-  "roles/compute.securityAdmin"
+  "roles/compute.securityAdmin",
+  "roles/iam.roleAdmin"
 ]
 
 # Bucket config
