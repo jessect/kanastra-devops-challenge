@@ -19,9 +19,8 @@ k8s_namespaces = [
   "production"
 ]
 
-
 # App service account roles
 app_roles = [
-  "roles/storage.objectCreator", # Push (write) images to and pull (read) images from an existing registry host in a project
-  "roles/container.developer"    # Access to Kubernetes API objects
+  "kanastra.app",             # Push (write) and pull (read) docker images
+  "roles/container.developer" # Access to Kubernetes API objects
 ]
