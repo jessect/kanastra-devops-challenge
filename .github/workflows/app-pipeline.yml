@@ -252,7 +252,7 @@ jobs:
     - name: Get release version after rollback
       run: kubectl get deployment kanastra-app -n staging -o=jsonpath='{$.spec.template.spec.containers[:1].image}'
   deploy_prd:
-    if: github.ref_type == 'tag' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' && github.ref_type == 'tag' && github.event_name == 'push'
     name: "Deploy - Production"
     needs: [load_stg, test_stg, helm_stg]
     runs-on: ubuntu-latest
@@ -284,7 +284,7 @@ jobs:
     - name: Helm history
       run: helm history kanastra-app -n production
   test_prd:
-    if: github.ref_type == 'tag' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' && github.ref_type == 'tag' && github.event_name == 'push'
     name: "App Test - Production"
     needs: deploy_prd
     runs-on: ubuntu-latest
@@ -294,7 +294,7 @@ jobs:
         REQUEST_RESULT=$(curl -s https://kanastra-app.duckdns.org/)
         if [ "$REQUEST_RESULT" != "Hello World!" ]; then echo "Bad request" && exit 1; fi;
   helm_prd:
-    if: github.ref_type == 'tag' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' && github.ref_type == 'tag' && github.event_name == 'push'
     name: "Helm Test - Production"
     needs: deploy_prd
     runs-on: ubuntu-latest
@@ -320,7 +320,7 @@ jobs:
     - name: Helm test
       run: helm test kanastra-app -n production
   rollback_prd:
-    if: ${{ github.ref_type == 'tag' && failure() && contains(needs.test_prd.result, 'failure') || contains(needs.helm_prd.result, 'failure') }}
+    if: ${{ github.ref == 'refs/heads/main' && github.ref_type == 'tag' && failure() && contains(needs.test_prd.result, 'failure') || contains(needs.helm_prd.result, 'failure') }}
     name: "Rollback - Production"
     needs: [test_prd,helm_prd]
     runs-on: ubuntu-latest
