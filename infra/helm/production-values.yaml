@@ -1,12 +1,15 @@
 image:
   tag: latest
 ingress:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+#    cert-manager.io/cluster-issuer: "letsencrypt"
   hosts:
     - host: kanastra-app.duckdns.org
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls:
-    - hosts:
-        - kanastra-app.duckdns.org
-      secretName: kanastra-app-prd-secret
+#  tls:
+#    - hosts:
+#        - kanastra-app.duckdns.org
+#      secretName: kanastra-app-prd-secret

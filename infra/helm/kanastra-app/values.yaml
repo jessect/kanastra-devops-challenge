@@ -10,7 +10,7 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
-imagePullSecrets: 
+imagePullSecrets:
   - name: kanastra-gcr
 nameOverride: ""
 fullnameOverride: ""
@@ -46,17 +46,17 @@ ingress:
   className: ""
   annotations:
     kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: "letsencrypt"
+#    cert-manager.io/cluster-issuer: "letsencrypt"
     # kubernetes.io/tls-acme: "true"
   hosts:
     - host: kanastra-app.duckdns.org
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls:
-    - hosts:
-        - kanastra-app.duckdns.org
-      secretName: kanastra-app-secret        
+#  tls:
+#    - hosts:
+#        - kanastra-app.duckdns.org
+#      secretName: kanastra-app-secret
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

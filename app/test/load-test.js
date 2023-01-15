@@ -11,6 +11,6 @@ export const options = {
 };
 
 export default function () {
-    const res = http.get('https://kanastra-app-stg.duckdns.org');
+    const res = http.get('http://kanastra-app-stg.duckdns.org');
     sleep(1);
 }

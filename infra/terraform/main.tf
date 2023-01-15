@@ -128,7 +128,7 @@ locals {
     spec = {
       acme = {
         # The ACME server URL
-        server = "https://acme-staging-v02.api.letsencrypt.org/directory"
+        server = "https://acme-v02.api.letsencrypt.org/directory"
         # Email address used for ACME registration
         email = "jesse.cota@gmail.com"
         # Name of a secret used to store the ACME account private key
