@@ -86,27 +86,15 @@ EOF
   depends_on = [helm_release.nginx]
 }
 
-# Install app in staging namespace
-resource "helm_release" "app_stg" {
+# Installs the app in the environments' namespaces
+resource "helm_release" "app" {
+  for_each  = toset(var.k8s_namespaces)
   name      = "kanastra-app"
-  namespace = "staging"
+  namespace = each.value
   chart     = "../helm/kanastra-app"
 
   values = [
-    file("../helm/staging-values.yaml")
-  ]
-
-  depends_on = [kubernetes_namespace.ns]
-}
-
-# Install app in production namespace
-resource "helm_release" "app_prd" {
-  name      = "kanastra-app"
-  namespace = "production"
-  chart     = "../helm/kanastra-app"
-
-  values = [
-    file("../helm/production-values.yaml")
+    file("../helm/${each.value}-values.yaml")
   ]
 
   depends_on = [kubernetes_namespace.ns]
