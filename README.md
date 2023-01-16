@@ -296,22 +296,22 @@ Os fluxos podem ser customizados conforme a necessidade da equipe de desenvolvim
 
 ### Pull Requests
 
-[PR com erros](https://github.com/jaylabs/kanastra-devops-challenge/pull/10)
-[PR sem erros](https://github.com/jaylabs/kanastra-devops-challenge/pull/11)
+[[PR com erros]](https://github.com/jaylabs/kanastra-devops-challenge/pull/10)
+[[PR sem erros]](https://github.com/jaylabs/kanastra-devops-challenge/pull/11)
 
 ### Workflows
 
 Pipeline de aplicação:
 
-[Workflow - Develop](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926045324)
-[Workflow - Staging](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926068940)
-[Workflow - Main](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926078170)
-[Workflow - Release](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926088988)
+[[Workflow - Develop]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926045324)
+[[Workflow - Staging]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926068940)
+[[Workflow - Main]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926078170)
+[[Workflow - Release]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926088988)
 
 Pipeline de infraestrutura:
 
 *TODO*
-[Workflow - Provisionamento](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926190038/jobs/6711677649)
+[[Workflow - Provisionamento]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926276304/jobs/6711860130)
 
 ```
 Run terraform destroy -auto-approve
@@ -324,7 +324,7 @@ Destroy complete! Resources: 39 destroyed.
 ```
 
 
-[Workflow - Teardown](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926190038/jobs/6711677649)
+[[Workflow - Teardown]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926190038/jobs/6711677649)
 
 ```
 Run terraform destroy -auto-approve
@@ -339,9 +339,9 @@ Destroy complete! Resources: 39 destroyed.
 ### Deploy
 
 *TODO*
-[Helm via Terraform]()
+[[Helm via Terraform]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926276304/jobs/6711860130)
 
-[Helm via Workflow](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926088988/jobs/6711507794)
+[[Helm via Workflow]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926088988/jobs/6711507794)
 
 ```
 Run helm upgrade kanastra-app -n production -f production-values.yaml ./kanastra-app
@@ -362,7 +362,7 @@ NOTES:
 
 ### Lint Node.js
 
-[Resultado](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926002309/jobs/6711329316)
+[[Workflow - Lint Node.js]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926002309/jobs/6711329316)
 ```
 > eslint app.js
 
@@ -375,8 +375,8 @@ NOTES:
 
 ### Lint Terraform
 
-[Pull Request](https://github.com/jaylabs/kanastra-devops-challenge/pull/14)
-[Workflow](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926136659/jobs/6711587456)
+[[Pull Request]](https://github.com/jaylabs/kanastra-devops-challenge/pull/14)
+[[Workflow - Lint Terraform]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926136659/jobs/6711587456)
 
 ```
 Run tflint -f compact
@@ -396,7 +396,7 @@ Warning: main.tf:179:1: Warning - Missing version constraint for provider "null"
 
 ### Mocha - Test
 
-[Resultado](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3925965761/jobs/6711255967)
+[[Workflow - Mocha Test]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3925965761/jobs/6711255967)
 
 ```
 > mocha ./test/test.js --exit
@@ -418,7 +418,7 @@ Example app listening on port 3000!
 
 ### Helm - Test
 
-[Resultado](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926088988/jobs/6711512610)
+[[Workflow - Helm Test]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926088988/jobs/6711512610)
 
 ```
 Run helm test kanastra-app -n production
