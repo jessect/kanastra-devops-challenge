@@ -66,7 +66,7 @@ Use sempre as melhores práticas para provisionar os recursos da núvem que esco
   * [[Loki + Grafana + Prometheus]](./infra/terraform/helm.tf#L35)
   * [[Rollback de Deployments]](.github/workflows/app-pipeline.yml#L193)
   * [[Pod Autoscaler]](./infra/helm/kanastra-app/values.yaml#L73)
-  * ~~[[Certificado SSL/TLS]](#bonus)~~ - Abortei a configuração pois o domínio `duckdns.org` caiu na regra de [rate limit do Let's Encrypt](https://letsencrypt.org/docs/rate-limits/) )
+  * ~~[[Certificado SSL/TLS]](#bonus)~~ - Abortei a configuração, domínio `duckdns.org` caiu na regra de [rate limit do Let's Encrypt](https://letsencrypt.org/docs/rate-limits/) )
 
 * O deploy de kubernetes tiver interligado com ferramenta de infra as code
   * [[Helm Install via Terraform]](./infra/terraform/helm.tf#L89)
@@ -296,8 +296,8 @@ Os fluxos podem ser customizados conforme a necessidade da equipe de desenvolvim
 
 ### Pull Requests
 
-[[PR com erros]](https://github.com/jaylabs/kanastra-devops-challenge/pull/10)
-[[PR sem erros]](https://github.com/jaylabs/kanastra-devops-challenge/pull/11)
+[[PR - Checks com falha]](https://github.com/jaylabs/kanastra-devops-challenge/pull/10)
+[[PR - Checks OK]](https://github.com/jaylabs/kanastra-devops-challenge/pull/11)
 
 ### Workflows
 
@@ -310,17 +310,43 @@ Pipeline de aplicação:
 
 Pipeline de infraestrutura:
 
-*TODO*
 [[Workflow - Provisionamento]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926276304/jobs/6711860130)
 
 ```
-Run terraform destroy -auto-approve
-/home/runner/work/_temp/cd2eac45-3b10-489f-b473-11d2fe92a9ec/terraform-bin destroy -auto-approve
-google_service_account.app: Refreshing state... [id=projects/jaylabs-kanastra-challenge/serviceAccounts/sa-kanastra-app@jaylabs-kanastra-challenge.iam.gserviceaccount.com]
-data.google_client_config.default: Reading...
-...
+terraform apply -var "duckdns_token=$***DUCKDNS_TOKEN***" -auto-approve
 
-Destroy complete! Resources: 39 destroyed.
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+ <= read (data resources)
+
+Terraform will perform the following actions:
+
+  # google_compute_address.lb will be created
+  + resource "google_compute_address" "lb" ***
+      + address            = (known after apply)
+      + address_type       = "EXTERNAL"
+      + creation_timestamp = (known after apply)
+      + id                 = (known after apply)
+...
+...
+helm_release.nginx: Creation complete after 2m42s [id=ingress-nginx]
+helm_release.cert_manager: Creating...
+helm_release.cert_manager: Still creating... [10s elapsed]
+helm_release.cert_manager: Still creating... [20s elapsed]
+helm_release.cert_manager: Still creating... [30s elapsed]
+helm_release.cert_manager: Still creating... [40s elapsed]
+helm_release.cert_manager: Creation complete after 44s [id=cert-manager]
+kubectl_manifest.cluster_issuer: Creating...
+kubectl_manifest.cluster_issuer: Creation complete after 1s [id=/apis/cert-manager.io/v1/clusterissuers/letsencrypt]
+
+Apply complete! Resources: 39 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+gsa_private_key_app = <sensitive>
+gsa_private_key_gcr = <sensitive>
 ```
 
 
@@ -338,8 +364,21 @@ Destroy complete! Resources: 39 destroyed.
 
 ### Deploy
 
-*TODO*
 [[Helm via Terraform]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926276304/jobs/6711860130)
+
+```
+helm_release.app["production"]: Creating...
+helm_release.app["staging"]: Creating...
+helm_release.app["development"]: Creating...
+
+helm_release.app["production"]: Still creating... [10s elapsed]
+helm_release.app["staging"]: Still creating... [10s elapsed]
+helm_release.app["development"]: Still creating... [10s elapsed]
+
+helm_release.app["development"]: Creation complete after 14s [id=kanastra-app]
+helm_release.app["staging"]: Creation complete after 14s [id=kanastra-app]
+helm_release.app["production"]: Creation complete after 16s [id=kanastra-app]
+```
 
 [[Helm via Workflow]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926088988/jobs/6711507794)
 
