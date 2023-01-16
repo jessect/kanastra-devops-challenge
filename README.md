@@ -300,6 +300,27 @@ Os fluxos podem ser customizados conforme a necessidade da equipe de desenvolvim
 ### Lint Terraform
 ### K6 - Load Testing + Pod Autoscaler
 ### Mocha - Test
+
+[![Application CI/CD](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml/badge.svg?event=pull_request)](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml)
+
+```
+> mocha ./test/test.js --exit
+
+Example app listening on port 3000!
+
+
+  GET /
+    1) responds with Hello World!
+
+
+  0 passing (29ms)
+  1 failing
+
+  1) GET /
+       responds with Hello World!:
+     Error: expected 'Hello World!' response body, got 'Bye World!'
+```
+
 ### Helm - Test
 ### Loki + Grafana + Prometheus
 
