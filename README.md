@@ -418,6 +418,8 @@ NOTES:
 
 [Wokflow - Rollback de Produção](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926462700/jobs/6712540988)
 
+**Observação**: Nessa etapa de rollback também poderia ter utilizado o comando `helm rollback kanastra-app [REVISION]`, mas optei pelo rollout do kubectl.
+
 ```
 kubectl get deployment kanastra-app -n production -o=jsonpath='***$.spec.template.spec.containers[:1].image***'
 gcr.io/jaylabs-kanastra-challenge/kanastra-app:1.0.3
@@ -427,7 +429,6 @@ deployment.apps/kanastra-app rolled back
 
 kubectl get deployment kanastra-app -n production -o=jsonpath='***$.spec.template.spec.containers[:1].image***'
 gcr.io/jaylabs-kanastra-challenge/kanastra-app:1.0.2
-
 ```
 
 ### Lint Node.js
