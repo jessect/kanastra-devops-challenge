@@ -217,13 +217,13 @@ terraform destroy
 
 ## GitHub Actions
 
-GitHub Actions é uma plataforma de integração contínua e entrega contínua (CI/CD) que permite automatizar a sua compilação, testar e pipeline de implantação. É possível criar fluxos de trabalho (workflow) que criam e testam cada pull request no seu repositório, ou implantar pull requests mesclados em produção.
+GitHub Actions é uma plataforma de integração contínua e entrega contínua (CI/CD) que permite automatizar a sua compilação, testar e implantação. É possível criar fluxos de trabalho (workflow) que criam e testam cada pull request no seu repositório, ou implantar pull requests mesclados em produção.
 
 ### Configuração
 
 Antes de executar os workflows será necessário configurar as variáveis e secrets do Github Actions:
 
-- **DUCKDNS_TOKEN** - [Duck DNS](https://www.duckdns.org/) é serviço de DNS dinâmico gratuito que foi utilizado nesse projeto.
+- **DUCKDNS_TOKEN** - [Duck DNS](https://www.duckdns.org/) é um serviço de DNS dinâmico gratuito que foi utilizado nesse projeto.
 - **GCP_APP_CREDENTIALS** - Credenciais da conta de serviço da aplicação.
 - **GCP_TF_CREDENTIALS** - Credenciais da conta de serviço do Terraform.
 
