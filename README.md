@@ -69,7 +69,7 @@ Use sempre as melhores práticas para provisionar os recursos da núvem que esco
   * [[Mocha - Test]](./app/package.json#L10) [[Check]](#mocha---test)
   * [[Helm - Test]](.github/workflows/app-pipeline.yml#L312) [[Check]](#helm---test)
   * [[Loki + Grafana + Prometheus]](./infra/terraform/helm.tf#L35) [[Check]](#loki---grafana---prometheus)
-  * [[Rollback de Deployments]](.github/workflows/app-pipeline.yml#L338) [[Check]]([#rollback-de-deployments)
+  * [[Rollback de Deployments]](.github/workflows/app-pipeline.yml#L338) [[Check]](#rollback-de-deployments)
   * [[Pod Autoscaler]](./infra/helm/kanastra-app/values.yaml#L73) [[Check]](#k6---load-testing---pod-autoscaler)
   * ~~[[Certificado SSL/TLS]](#bonus)~~ - Abortei a configuração, domínio `duckdns.org` caiu na regra de [rate limit do Let's Encrypt](https://letsencrypt.org/docs/rate-limits/) )
 
