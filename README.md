@@ -301,7 +301,7 @@ Os fluxos podem ser customizados conforme a necessidade da equipe de desenvolvim
 ### K6 - Load Testing + Pod Autoscaler
 ### Mocha - Test
 
-(Test)(https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3925965761/jobs/6711255967)
+[Test](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3925965761/jobs/6711255967)
 
 ```
 > mocha ./test/test.js --exit
