@@ -303,6 +303,7 @@ Os fluxos podem ser customizados conforme a necessidade da equipe de desenvolvim
 
 - [[PR - Checks com falha]](https://github.com/jaylabs/kanastra-devops-challenge/pull/10)
 - [[PR - Checks OK]](https://github.com/jaylabs/kanastra-devops-challenge/pull/11)
+- [[PR - Terraform Plan]](https://github.com/jaylabs/kanastra-devops-challenge/pull/19)
 
 ### Workflows
 
