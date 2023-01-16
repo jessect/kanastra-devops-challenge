@@ -48,7 +48,10 @@ Use sempre as melhores práticas para provisionar os recursos da núvem que esco
 * Escolha uma ferramenta de CI/CD apropriada [[GitHub Actions]](https://github.com/jaylabs/kanastra-devops-challenge/actions)
 * Configure um pipeline de build de contêiner docker da aplicação node [![Application CI/CD](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml)
 * Configure um pipeline de deploy contínuo para o aplicação node em contêiner [![Application CI/CD](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml)
-  * Deve conter pelo menos uma fase de testes e uma fase de deploy [[Test]](.github/workflows/app-pipeline.yml#L54) [[Deploy Staging]](.github/workflows/app-pipeline.yml#L148) [[Deploy Produção]](.github/workflows/app-pipeline.yml#L270)
+  * Deve conter pelo menos uma fase de testes e uma fase de deploy
+    * [[Test]](.github/workflows/app-pipeline.yml#L54)
+    * [[Deploy Staging]](.github/workflows/app-pipeline.yml#L148)
+    * [[Deploy Produção]](.github/workflows/app-pipeline.yml#L270)
   * A fase de deploy só deve ser executada se a fase de testes for bem-sucedida
       * [[Workflow com erros validação no Test e Lint, não avança para fase de deploy]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926002309)
       * [[Workflow com falhas no staging, portanto, não executa deploy em produção. Efetuado rollback automático do staging]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926462700/attempts/2)
