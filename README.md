@@ -25,7 +25,7 @@
   * [Rollback de Deployments](#rollback-de-deployments)
   * [Lint Node.js](#lint-nodejs)
   * [Lint Terraform](#lint-terraform)
-  * [K6 - Load Testing + Pod Autoscaler](#k6---load-testing---pod-autoscaler)
+  * [Load Testing](#load-testing-1)
   * [Mocha - Test](#mocha---test)
   * [Helm - Test](#helm---test)
 - [Artigos de Referência](#artigos-de-refer-ncia)
@@ -461,7 +461,7 @@ Run tflint -f compact
 Warning: main.tf:179:1: Warning - Missing version constraint for provider "null" in "required_providers" (terraform_required_providers)
 ```
 
-### K6 - Load Testing + Pod Autoscaler
+### Load Testing
 
 Realizado um teste de carga no app:
 
