@@ -69,7 +69,7 @@ Use sempre as melhores práticas para provisionar os recursos da núvem que esco
   * [[Helm - Test]](.github/workflows/app-pipeline.yml#L312)
   * [[Loki + Grafana + Prometheus]](./infra/terraform/helm.tf#L35)
   * [[Rollback de Deployments]](.github/workflows/app-pipeline.yml#L338)
-  * [[Pod Autoscaler]](./infra/helm/kanastra-app/values.yaml#L73)
+  * [[Pod Autoscaler]](./infra/helm/kanastra-app/values.yaml#L69)
   * ~~[[Certificado SSL/TLS]](#bonus)~~ - Abortei a configuração, domínio `duckdns.org` caiu na regra de [rate limit do Let's Encrypt](https://letsencrypt.org/docs/rate-limits/) )
 
 * O deploy de kubernetes tiver interligado com ferramenta de infra as code
