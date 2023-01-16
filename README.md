@@ -278,7 +278,7 @@ A pipeline executa tarefas dependendo do tipo de evento:
 
 * **pull request** -  Executa tarefas build test e lint.
 * **push** -  Executa tarefas de build + push da imagem docker para o repositório GCR e efetua o deploy da branch develop.
-* **tag** - Executa tarefas similares ao push, além de efetuar o deploy das branches staging e main.
+* **tag** - Executa tarefas similares ao push e realiza o deploy das branches staging e main.
 
 As imagens docker possuem 2 tipos de tag:
 
