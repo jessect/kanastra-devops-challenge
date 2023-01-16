@@ -28,7 +28,6 @@
   * [K6 - Load Testing + Pod Autoscaler](#k6---load-testing---pod-autoscaler)
   * [Mocha - Test](#mocha---test)
   * [Helm - Test](#helm---test)
-  * [Loki + Grafana + Prometheus](#loki---grafana---prometheus)
 - [Artigos de Referência](#artigos-de-refer-ncia)
 
 
@@ -464,7 +463,67 @@ Warning: main.tf:179:1: Warning - Missing version constraint for provider "null"
 
 ### K6 - Load Testing + Pod Autoscaler
 
-*TODO*
+Realizado um teste de carga no app:
+
+```
+running (10m00.9s), 000/100 VUs, 58500 complete and 0 interrupted iterations
+default ✓ [ 100% ] 100 VUs  10m0s
+
+     data_received..................: 13 MB  21 kB/s
+     data_sent......................: 5.5 MB 9.2 kB/s
+     http_req_blocked...............: avg=3.54ms   min=1µs     med=2.5µs   max=1.9s     p(90)=5µs     p(95)=6.5µs
+     http_req_connecting............: avg=225.43µs min=0s      med=0s      max=39.19ms  p(90)=0s      p(95)=0s
+   ✓ http_req_duration..............: avg=22.57ms  min=20.71ms med=22.3ms  max=244.48ms p(90)=23.64ms p(95)=24.57ms
+       { expected_response:true }...: avg=22.57ms  min=20.71ms med=22.3ms  max=244.48ms p(90)=23.64ms p(95)=24.57ms
+   ✓ http_req_failed................: 0.00%  ✓ 0         ✗ 58500
+     http_req_receiving.............: avg=40.37µs  min=8.9µs   med=28.7µs  max=2.19ms   p(90)=78.2µs  p(95)=100.7µs
+     http_req_sending...............: avg=19.3µs   min=3.9µs   med=9.7µs   max=3.28ms   p(90)=26.6µs  p(95)=56.6µs
+     http_req_tls_handshaking.......: avg=0s       min=0s      med=0s      max=0s       p(90)=0s      p(95)=0s
+     http_req_waiting...............: avg=22.51ms  min=20.63ms med=22.24ms max=244.39ms p(90)=23.57ms p(95)=24.5ms
+     http_reqs......................: 58500  97.361382/s
+     iteration_duration.............: avg=1.02s    min=1.02s   med=1.02s   max=2.94s    p(90)=1.02s   p(95)=1.02s
+     iterations.....................: 58500  97.361382/s
+     vus............................: 100    min=100     max=100
+     vus_max........................: 100    min=100     max=100
+```
+
+Horizontal Pod Autoscaler
+
+```
+➜  kubetcl describe hpa kanastra-app
+
+Name:                                                  kanastra-app
+Namespace:                                             production
+Labels:                                                app.kubernetes.io/instance=kanastra-app
+                                                       app.kubernetes.io/managed-by=Helm
+                                                       app.kubernetes.io/name=kanastra-app
+                                                       app.kubernetes.io/version=1.0.0
+                                                       helm.sh/chart=kanastra-app-1.0.0
+Annotations:                                           meta.helm.sh/release-name: kanastra-app
+                                                       meta.helm.sh/release-namespace: production
+CreationTimestamp:                                     Mon, 16 Jan 2023 01:15:45 -0300
+Reference:                                             Deployment/kanastra-app
+Metrics:                                               ( current / target )
+  resource cpu on pods  (as a percentage of request):  229% (114m) / 80%
+Min replicas:                                          3
+Max replicas:                                          6
+Deployment pods:                                       6 current / 6 desired
+Conditions:
+  Type            Status  Reason            Message
+  ----            ------  ------            -------
+  AbleToScale     True    ReadyForNewScale  recommended size matches current size
+  ScalingActive   True    ValidMetricFound  the HPA was able to successfully calculate a replica count from cpu resource utilization (percentage of request)
+  ScalingLimited  True    TooManyReplicas   the desired replica count is more than the maximum replica count
+Events:
+  Type     Reason                   Age                 From                       Message
+  ----     ------                   ----                ----                       -------
+  Warning  FailedGetResourceMetric  5m45s (x2 over 6m)  horizontal-pod-autoscaler  missing request for cpu
+  Normal   SuccessfulRescale        5m30s               horizontal-pod-autoscaler  New size: 3; reason: cpu resource utilization (percentage of request) above target
+  Warning  FailedGetResourceMetric  5m15s               horizontal-pod-autoscaler  no recommendation
+  Normal   SuccessfulRescale        4m                  horizontal-pod-autoscaler  New size: 4; reason: cpu resource utilization (percentage of request) above target
+  Normal   SuccessfulRescale        59s                 horizontal-pod-autoscaler  New size: 6; reason: cpu resource utilization (percentage of request) above target
+
+```
 
 ### Mocha - Test
 
@@ -508,8 +567,6 @@ NOTES:
 1. Get the application URL by running these commands:
   http://kanastra-app.duckdns.org/
 ```
-
-### Loki + Grafana + Prometheus
 
 ## Artigos de Referência
 
