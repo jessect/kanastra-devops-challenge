@@ -66,6 +66,7 @@ Use sempre as melhores práticas para provisionar os recursos da núvem que esco
   * [[Loki + Grafana + Prometheus]](./infra/terraform/helm.tf#L35)
   * [[Rollback de Deployments]](.github/workflows/app-pipeline.yml#L193)
   * [[Pod Autoscaler]](./infra/helm/kanastra-app/values.yaml#L73)
+  * ~~[[Certificado SSL/TLS]](#bonus)~~ - Abortei a configuração pois o domínio `duckdns.org` caiu na regra de [rate limit do Let's Encrypt](https://letsencrypt.org/docs/rate-limits/) )
 
 * O deploy de kubernetes tiver interligado com ferramenta de infra as code
   * [[Helm Install via Terraform]](./infra/terraform/helm.tf#L89)
@@ -294,14 +295,108 @@ Os fluxos podem ser customizados conforme a necessidade da equipe de desenvolvim
 ## Validando Ambiente
 
 ### Pull Requests
+
+[PR com erros](https://github.com/jaylabs/kanastra-devops-challenge/pull/10)
+[PR sem erros](https://github.com/jaylabs/kanastra-devops-challenge/pull/11)
+
+### Workflows
+
+Pipeline de aplicação:
+
+[Workflow - Develop](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926045324)
+[Workflow - Staging](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926068940)
+[Workflow - Main](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926078170)
+[Workflow - Release](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926088988)
+
+Pipeline de infraestrutura:
+
+*TODO*
+[Workflow - Provisionamento](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926190038/jobs/6711677649)
+
+```
+Run terraform destroy -auto-approve
+/home/runner/work/_temp/cd2eac45-3b10-489f-b473-11d2fe92a9ec/terraform-bin destroy -auto-approve
+google_service_account.app: Refreshing state... [id=projects/jaylabs-kanastra-challenge/serviceAccounts/sa-kanastra-app@jaylabs-kanastra-challenge.iam.gserviceaccount.com]
+data.google_client_config.default: Reading...
+...
+
+Destroy complete! Resources: 39 destroyed.
+```
+
+
+[Workflow - Teardown](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926190038/jobs/6711677649)
+
+```
+Run terraform destroy -auto-approve
+/home/runner/work/_temp/cd2eac45-3b10-489f-b473-11d2fe92a9ec/terraform-bin destroy -auto-approve
+google_service_account.app: Refreshing state... [id=projects/jaylabs-kanastra-challenge/serviceAccounts/sa-kanastra-app@jaylabs-kanastra-challenge.iam.gserviceaccount.com]
+data.google_client_config.default: Reading...
+...
+
+Destroy complete! Resources: 39 destroyed.
+```
+
 ### Deploy
+
+*TODO*
+[Helm via Terraform]()
+
+[Helm via Workflow](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926088988/jobs/6711507794)
+
+```
+Run helm upgrade kanastra-app -n production -f production-values.yaml ./kanastra-app
+
+Release "kanastra-app" has been upgraded. Happy Helming!
+NAME: kanastra-app
+LAST DEPLOYED: Mon Jan 16 00:45:01 2023
+NAMESPACE: production
+STATUS: deployed
+REVISION: 2
+NOTES:
+1. Get the application URL by running these commands:
+  http://kanastra-app.duckdns.org/
+
+```
+
 ### Rollback de Deployments
+
 ### Lint Node.js
+
+[Resultado](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926002309/jobs/6711329316)
+```
+> eslint app.js
+
+
+/home/runner/work/kanastra-devops-challenge/kanastra-devops-challenge/app/app.js
+  7:1  error  Parsing error: Unexpected token app
+
+✖ 1 problem (1 error, 0 warnings)
+```
+
 ### Lint Terraform
+
+[Pull Request](https://github.com/jaylabs/kanastra-devops-challenge/pull/14)
+[Workflow](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926136659/jobs/6711587456)
+
+```
+Run tflint -f compact
+  tflint -f compact
+  shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+  env:
+    TERRAFORM_CLI_PATH: /home/runner/work/_temp/3691c88f-fdb6-41f5-8e8d-dc08a150a80e
+    MSYS: winsymlinks:nativestrict
+1 issue(s) found:
+
+Warning: main.tf:179:1: Warning - Missing version constraint for provider "null" in "required_providers" (terraform_required_providers)
+```
+
 ### K6 - Load Testing + Pod Autoscaler
+
+*TODO*
+
 ### Mocha - Test
 
-[Test](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3925965761/jobs/6711255967)
+[Resultado](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3925965761/jobs/6711255967)
 
 ```
 > mocha ./test/test.js --exit
@@ -322,6 +417,26 @@ Example app listening on port 3000!
 ```
 
 ### Helm - Test
+
+[Resultado](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926088988/jobs/6711512610)
+
+```
+Run helm test kanastra-app -n production
+
+NAME: kanastra-app
+LAST DEPLOYED: Mon Jan 16 00:45:01 2023
+NAMESPACE: production
+STATUS: deployed
+REVISION: 2
+TEST SUITE:     kanastra-app-test-connection
+Last Started:   Mon Jan 16 00:45:35 2023
+Last Completed: Mon Jan 16 00:45:39 2023
+Phase:          Succeeded
+NOTES:
+1. Get the application URL by running these commands:
+  http://kanastra-app.duckdns.org/
+```
+
 ### Loki + Grafana + Prometheus
 
 ## Artigos de Referência

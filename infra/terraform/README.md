@@ -17,7 +17,7 @@
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.8.0 |
 | <a name="provider_kubectl"></a> [kubectl](#provider\_kubectl) | 1.14.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.16.1 |
-| <a name="provider_null"></a> [null](#provider\_null) | >= 3.2.1 |
+| <a name="provider_null"></a> [null](#provider\_null) | 3.2.1 |
 
 ## Modules
 
@@ -32,14 +32,14 @@
 | Name | Type |
 |------|------|
 | [google_compute_address.lb](https://registry.terraform.io/providers/hashicorp/google/4.48.0/docs/resources/compute_address) | resource |
+| [google_project_iam_custom_role.app](https://registry.terraform.io/providers/hashicorp/google/4.48.0/docs/resources/project_iam_custom_role) | resource |
 | [google_project_iam_member.app](https://registry.terraform.io/providers/hashicorp/google/4.48.0/docs/resources/project_iam_member) | resource |
 | [google_project_iam_member.gcr](https://registry.terraform.io/providers/hashicorp/google/4.48.0/docs/resources/project_iam_member) | resource |
 | [google_service_account.app](https://registry.terraform.io/providers/hashicorp/google/4.48.0/docs/resources/service_account) | resource |
 | [google_service_account.gcr](https://registry.terraform.io/providers/hashicorp/google/4.48.0/docs/resources/service_account) | resource |
 | [google_service_account_key.app](https://registry.terraform.io/providers/hashicorp/google/4.48.0/docs/resources/service_account_key) | resource |
 | [google_service_account_key.gcr](https://registry.terraform.io/providers/hashicorp/google/4.48.0/docs/resources/service_account_key) | resource |
-| [helm_release.app_prd](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.app_stg](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [helm_release.app](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.cert_manager](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.loki_stack](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.nginx](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
@@ -53,6 +53,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_app_roles"></a> [app\_roles](#input\_app\_roles) | List of required roles for App service account | `list(string)` | <pre>[<br>  "roles/storage.objectViewer",<br>  "roles/container.developer"<br>]</pre> | no |
 | <a name="input_cluster_issuer_yaml"></a> [cluster\_issuer\_yaml](#input\_cluster\_issuer\_yaml) | Create Cluster Issuer with yaml | `string` | `null` | no |
 | <a name="input_duckdns_token"></a> [duckdns\_token](#input\_duckdns\_token) | Duck DNS token | `string` | `"xxxxxxxxxxx"` | no |
 | <a name="input_k8s_namespaces"></a> [k8s\_namespaces](#input\_k8s\_namespaces) | The list of namespaces to create on Kubernetes | `list(string)` | <pre>[<br>  "monitoring",<br>  "staging",<br>  "production"<br>]</pre> | no |
