@@ -74,8 +74,8 @@ Use sempre as melhores práticas para provisionar os recursos da núvem que esco
   * ~~[[Certificado SSL/TLS]](#bonus)~~ - Abortei a configuração, domínio `duckdns.org` caiu na regra de [rate limit do Let's Encrypt](https://letsencrypt.org/docs/rate-limits/) )
 
 * O deploy de kubernetes tiver interligado com ferramenta de infra as code
-  * [[Helm Install via Terraform]](./infra/terraform/helm.tf#L89) [[Check]]([#workflows-1])
-  * [[Helm Upgrade via GitHub Actions]](.github/workflows/app-pipeline.yml#L270) [[Check]]([#workflows-1])
+  * [[Helm Install via Terraform]](./infra/terraform/helm.tf#L89)
+  * [[Helm Upgrade via GitHub Actions]](.github/workflows/app-pipeline.yml#L270)
 
 
 
