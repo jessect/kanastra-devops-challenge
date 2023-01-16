@@ -64,7 +64,7 @@ Use sempre as melhores práticas para provisionar os recursos da núvem que esco
 * Adicionar pipelines para teste lint, e outras coisas a mais na aplicação
 
   * [[Lint Node.js]](.github/workflows/app-pipeline.yml#L74) [[Check]]([#lint-nodejs])
-  * [[Lint Terraform]](.github/workflows/infra-pipeline.yml#L60) [[Check]]([#lint-terraform)])
+  * [[Lint Terraform]](.github/workflows/infra-pipeline.yml#L60) [[Check]]([#lint-terraform)
   * [[K6 - Load Testing]](.github/workflows/app-pipeline.yml#L213) [[Check]]([#k6---load-testing---pod-autoscaler])
   * [[Mocha - Test]](./app/package.json#L10) [[Check]]([#mocha---test])
   * [[Helm - Test]](.github/workflows/app-pipeline.yml#L312) [[Check]]([#helm---test])
@@ -278,7 +278,7 @@ A pipeline executa tarefas dependendo do tipo de evento:
 
 * **pull request** -  Executa tarefas build test e lint.
 * **push** -  Executa tarefas de build + push da imagem docker para o repositório GCR e efetua o deploy da branch develop.
-* **tag** - Executa as tarefas similar ao push, mas efetua o deploy das branches staging e main.
+* **tag** - Executa tarefas similares ao push, além de efetuar o deploy das branches staging e main.
 
 As imagens docker possuem 2 tipos de tag:
 
