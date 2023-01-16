@@ -37,6 +37,7 @@
 
 
 
+
 ## Premissas do Desafio
 ### Provisionamento
 * Configure um cluster k8s em núvem (EKS, AKS ou GKE) [[Código]](./infra/terraform/main.tf#L61)
@@ -50,10 +51,13 @@ Use sempre as melhores práticas para provisionar os recursos da núvem que esco
 * Escolha uma ferramenta de CI/CD apropriada [[GitHub Actions]](https://github.com/jaylabs/kanastra-devops-challenge/actions)
 * Configure um pipeline de build de contêiner docker da aplicação node [![Application CI/CD](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml)
 * Configure um pipeline de deploy contínuo para o aplicação node em contêiner [![Application CI/CD](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml)
-  * Deve conter pelo menos uma fase de testes e uma fase de deploy [[Test]](.github/workflows/app-pipeline.yml#L54) [[Deploy Staging]](.github/workflows/app-pipeline.yml#L148) [[Deploy Produção]](.github/workflows/app-pipeline.yml#L218)
-  * A fase de deploy só deve ser executada se a fase de testes for bem-sucedida [[Código]](.github/workflows/app-pipeline.yml#L221)
-  * Ele deve seguir o fluxo do GitHub flow para o deploy [[Feito]](#git-flow)
-  * O deploy deve ser feito no cluster k8s provisionado no Code Challenge [[Helm Chart]](./infra/helm)
+  * Deve conter pelo menos uma fase de testes e uma fase de deploy [[Test]](.github/workflows/app-pipeline.yml#L54) [[Deploy Staging]](.github/workflows/app-pipeline.yml#L148) [[Deploy Produção]](.github/workflows/app-pipeline.yml#L270)
+  * A fase de deploy só deve ser executada se a fase de testes for bem-sucedida
+      * [[Workflow com erros validação no Test e Lint, não avança para fase de deploy]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926002309)
+      * [[Workflow com falhas no staging, portanto, não executa deploy em produção. Efetuado rollback automático do staging]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926462700/attempts/2)
+      * [[Workflow com falhas em produção, efetuado rollback da release]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926462700/attempts/4)
+  * Ele deve seguir o fluxo do GitHub flow para o deploy [[Git Flow]](#git-flow)
+  * O deploy deve ser feito no cluster k8s provisionado no Code Challenge [[Deploy]](#deploy)
 
 ### Bonus
 * Adicionar pipelines para teste lint, e outras coisas a mais na aplicação
@@ -364,6 +368,18 @@ Destroy complete! Resources: 39 destroyed.
 
 ### Deploy
 
+Gerenciamento de releases com Helm:
+
+```
+helm history kanastra-app -n production
+
+REVISION        UPDATED                         STATUS          CHART                   APP VERSION     DESCRIPTION
+1               Mon Jan 16 01:34:19 2023        superseded      kanastra-app-1.0.0      1.0.0           Install complete
+2               Mon Jan 16 01:56:29 2023        superseded      kanastra-app-1.0.0      1.0.1           Upgrade complete
+3               Mon Jan 16 02:03:05 2023        superseded      kanastra-app-1.0.0      1.0.2           Upgrade complete
+4               Mon Jan 16 02:38:55 2023        deployed        kanastra-app-1.0.0      1.0.3           Upgrade complete
+```
+
 - [[Helm via Terraform]](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926276304/jobs/6711860130)
 
 ```
@@ -398,6 +414,20 @@ NOTES:
 ```
 
 ### Rollback de Deployments
+
+[Wokflow - Rollback de Produção](https://github.com/jaylabs/kanastra-devops-challenge/actions/runs/3926462700/jobs/6712540988)
+
+```
+kubectl get deployment kanastra-app -n production -o=jsonpath='***$.spec.template.spec.containers[:1].image***'
+gcr.io/jaylabs-kanastra-challenge/kanastra-app:1.0.3
+
+kubectl rollout undo deployment/kanastra-app -n production
+deployment.apps/kanastra-app rolled back
+
+kubectl get deployment kanastra-app -n production -o=jsonpath='***$.spec.template.spec.containers[:1].image***'
+gcr.io/jaylabs-kanastra-challenge/kanastra-app:1.0.2
+
+```
 
 ### Lint Node.js
 
