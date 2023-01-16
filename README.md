@@ -63,14 +63,14 @@ Use sempre as melhores práticas para provisionar os recursos da núvem que esco
 ### Bonus
 * Adicionar pipelines para teste lint, e outras coisas a mais na aplicação
 
-  * [[Lint Node.js]](.github/workflows/app-pipeline.yml#L74) [[Check]](#lint-nodejs)
-  * [[Lint Terraform]](.github/workflows/infra-pipeline.yml#L60) [[Check]](#lint-terraform)
-  * [[K6 - Load Testing]](.github/workflows/app-pipeline.yml#L213) [[Check]](#k6---load-testing---pod-autoscaler)
-  * [[Mocha - Test]](./app/package.json#L10) [[Check]](#mocha---test)
-  * [[Helm - Test]](.github/workflows/app-pipeline.yml#L312) [[Check]](#helm---test)
-  * [[Loki + Grafana + Prometheus]](./infra/terraform/helm.tf#L35) [[Check]](#loki---grafana---prometheus)
-  * [[Rollback de Deployments]](.github/workflows/app-pipeline.yml#L338) [[Check]](#rollback-de-deployments)
-  * [[Pod Autoscaler]](./infra/helm/kanastra-app/values.yaml#L73) [[Check]](#k6---load-testing---pod-autoscaler)
+  * [[Lint Node.js]](.github/workflows/app-pipeline.yml#L74)
+  * [[Lint Terraform]](.github/workflows/infra-pipeline.yml#L60)
+  * [[K6 - Load Testing]](.github/workflows/app-pipeline.yml#L213)
+  * [[Mocha - Test]](./app/package.json#L10)
+  * [[Helm - Test]](.github/workflows/app-pipeline.yml#L312)
+  * [[Loki + Grafana + Prometheus]](./infra/terraform/helm.tf#L35)
+  * [[Rollback de Deployments]](.github/workflows/app-pipeline.yml#L338)
+  * [[Pod Autoscaler]](./infra/helm/kanastra-app/values.yaml#L73)
   * ~~[[Certificado SSL/TLS]](#bonus)~~ - Abortei a configuração, domínio `duckdns.org` caiu na regra de [rate limit do Let's Encrypt](https://letsencrypt.org/docs/rate-limits/) )
 
 * O deploy de kubernetes tiver interligado com ferramenta de infra as code
