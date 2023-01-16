@@ -10,17 +10,5 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = ">= 2.16.1"
     }
-    kubectl = {
-      source  = "gavinbunney/kubectl"
-      version = ">= 1.10.0"
-    }
-    helm = {
-      source  = "hashicorp/helm"
-      version = ">= 2.8.0"
-    }
-    null = {
-      source  = "hashicorp/null"
-      version = ">= 3.2.1"
-    }
   }
 }
