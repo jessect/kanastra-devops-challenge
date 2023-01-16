@@ -45,7 +45,7 @@ Use sempre as melhores práticas para provisionar os recursos da núvem que esco
 
 
 ### Pipelines CI/CD
-* Escolha uma ferramenta de CI/CD apropriada [[GitHub Actions]](https://github.com/jaylabs/kanastra-devops-challenge/actions)
+* Escolha uma ferramenta de CI/CD apropriada [[GitHub Actions]](#github-actions)
 * Configure um pipeline de build de contêiner docker da aplicação node [![Application CI/CD](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml)
 * Configure um pipeline de deploy contínuo para o aplicação node em contêiner [![Application CI/CD](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml/badge.svg)](https://github.com/jaylabs/kanastra-devops-challenge/actions/workflows/app-pipeline.yml)
   * Deve conter pelo menos uma fase de testes e uma fase de deploy
